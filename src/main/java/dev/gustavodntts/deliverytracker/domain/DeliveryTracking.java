@@ -1,21 +1,22 @@
 package dev.gustavodntts.deliverytracker.domain;
 
-import dev.gustavodntts.deliverytracker.domain.enums.DeliveryStatusEnum;
+import dev.gustavodntts.deliverytracker.domain.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "delivery_status")
+@Table(name = "delivery_tracking")
 @Getter
 @Setter
 @NoArgsConstructor
-public class DeliveryStatus {
+public class DeliveryTracking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -32,8 +33,9 @@ public class DeliveryStatus {
     private BigDecimal lng;
 
     @Enumerated(EnumType.STRING)
-    private DeliveryStatusEnum status = DeliveryStatusEnum.in_transit;
+    private OrderStatus status = OrderStatus.IN_TRANSIT;
 
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 }

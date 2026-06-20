@@ -1,6 +1,6 @@
 package dev.gustavodntts.deliverytracker.domain;
 
-import dev.gustavodntts.deliverytracker.domain.enums.DeliveryStatusEnum;
+import dev.gustavodntts.deliverytracker.domain.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,20 +24,20 @@ public class Order {
     @Column(name = "customer_id")
     private UUID customerId;
 
-    @Column(name = "delivery_id")
-    private UUID deliveryId;
+    @Column(name = "courier_id")
+    private UUID courierId;
 
     @Enumerated(EnumType.STRING)
-    private DeliveryStatusEnum status = DeliveryStatusEnum.pending;
+    private OrderStatus status = OrderStatus.PENDING;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private DeliveryStatus deliveryStatus;
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private DeliveryTracking deliveryTracking;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<LocationHistory> locationHistory;
+    private List<LocationHistory> locationHistories;
 
     @PrePersist
     public void prePersist() {

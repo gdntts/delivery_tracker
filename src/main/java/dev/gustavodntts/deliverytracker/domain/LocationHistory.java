@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -30,7 +32,7 @@ public class LocationHistory {
     @Column(precision = 10, scale = 7)
     private BigDecimal lng;
 
+    @CreationTimestamp
     @Column(name = "recorded_at")
     private LocalDateTime recordedAt;
-
 }
