@@ -5,9 +5,11 @@ import dev.gustavodntts.deliverytracker.domain.LocationHistory;
 import dev.gustavodntts.deliverytracker.domain.Order;
 import dev.gustavodntts.deliverytracker.dto.LocationEvent;
 import dev.gustavodntts.deliverytracker.dto.LocationRequest;
+import dev.gustavodntts.deliverytracker.exception.BusinessRuleException;
 import dev.gustavodntts.deliverytracker.repository.DeliveryTrackingRepository;
 import dev.gustavodntts.deliverytracker.repository.LocationHistoryRepository;
 import dev.gustavodntts.deliverytracker.repository.OrderRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -58,8 +60,11 @@ public class LocationService {
         locationHistoryRepository.save(locationHistory);
     }
 
+    @Transactional
     public void updateLocation(UUID orderId, BigDecimal lat, BigDecimal lng) {
-        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Pedido não encontrado: " + orderId));
+        Order order =
+                orderRepository.findById(orderId).orElseThrow(() -> new BusinessRuleException(
+                        "Pedido não encontrado: " + orderId));
 
         upsertDeliveryTracking(order, lat, lng);
         recordLocationHistory(order, lat, lng);

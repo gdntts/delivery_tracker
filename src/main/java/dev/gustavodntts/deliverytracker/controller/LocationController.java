@@ -18,7 +18,7 @@ public class LocationController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void updateLocation(@RequestBody LocationRequest locationRequest) {
+    public void updateLocation(@RequestBody @Valid LocationRequest locationRequest) {
         locationService.updateLocation(locationRequest.orderId(), locationRequest.lat(), locationRequest.lng());
     }
 }

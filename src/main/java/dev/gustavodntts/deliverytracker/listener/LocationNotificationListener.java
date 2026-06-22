@@ -62,6 +62,6 @@ public class LocationNotificationListener {
     private void handleNotification(String payload) throws Exception {
         JsonNode json = objectMapper.readTree(payload);
         String orderId = json.get("order_id").asString();
-        messagingTemplate.convertAndSend("/topic/order/" + orderId, json);
+        messagingTemplate.convertAndSend("/topic/order." + orderId, json);
     }
 }
