@@ -3,9 +3,12 @@ package dev.gustavodntts.deliverytracker.service;
 import dev.gustavodntts.deliverytracker.domain.DeliveryTracking;
 import dev.gustavodntts.deliverytracker.domain.LocationHistory;
 import dev.gustavodntts.deliverytracker.domain.Order;
+import dev.gustavodntts.deliverytracker.dto.LocationEvent;
+import dev.gustavodntts.deliverytracker.dto.LocationRequest;
 import dev.gustavodntts.deliverytracker.repository.DeliveryTrackingRepository;
 import dev.gustavodntts.deliverytracker.repository.LocationHistoryRepository;
 import dev.gustavodntts.deliverytracker.repository.OrderRepository;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,12 +23,13 @@ public class LocationService {
 
     private final OrderRepository orderRepository;
 
-    public LocationService(LocationHistoryRepository locationHistoryRepository,
-                           DeliveryTrackingRepository deliveryTrackingRepository,
-                           OrderRepository orderRepository) {
+    private final SimpMessagingTemplate messagingTemplate;
+
+    public LocationService(LocationHistoryRepository locationHistoryRepository, DeliveryTrackingRepository deliveryTrackingRepository, OrderRepository orderRepository, SimpMessagingTemplate messagingTemplate) {
         this.locationHistoryRepository = locationHistoryRepository;
         this.deliveryTrackingRepository = deliveryTrackingRepository;
         this.orderRepository = orderRepository;
+        this.messagingTemplate = messagingTemplate;
     }
 
     private void upsertDeliveryTracking(Order order, BigDecimal lat, BigDecimal lng) {
@@ -54,5 +58,8 @@ public class LocationService {
 
         upsertDeliveryTracking(order, lat, lng);
         recordLocationHistory(order, lat, lng);
+
+        messagingTemplate.convertAndSend("/topic/order." + order.getId(),
+                new LocationEvent(order.getId(), lat, lng));
     }
 }
