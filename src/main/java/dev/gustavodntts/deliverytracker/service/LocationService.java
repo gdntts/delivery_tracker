@@ -25,7 +25,12 @@ public class LocationService {
 
     private final SimpMessagingTemplate messagingTemplate;
 
-    public LocationService(LocationHistoryRepository locationHistoryRepository, DeliveryTrackingRepository deliveryTrackingRepository, OrderRepository orderRepository, SimpMessagingTemplate messagingTemplate) {
+    public LocationService(
+            LocationHistoryRepository locationHistoryRepository,
+            DeliveryTrackingRepository deliveryTrackingRepository,
+            OrderRepository orderRepository,
+            SimpMessagingTemplate messagingTemplate
+    ) {
         this.locationHistoryRepository = locationHistoryRepository;
         this.deliveryTrackingRepository = deliveryTrackingRepository;
         this.orderRepository = orderRepository;

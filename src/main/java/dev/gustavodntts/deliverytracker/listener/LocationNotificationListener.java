@@ -24,7 +24,11 @@ public class LocationNotificationListener {
 
     private final ObjectMapper objectMapper;
 
-    public LocationNotificationListener(ObjectMapper objectMapper, SimpMessagingTemplate messagingTemplate, DataSource dataSource) {
+    public LocationNotificationListener(
+            ObjectMapper objectMapper,
+            SimpMessagingTemplate messagingTemplate,
+            DataSource dataSource
+    ) {
         this.objectMapper = objectMapper;
         this.messagingTemplate = messagingTemplate;
         this.dataSource = dataSource;
@@ -33,7 +37,10 @@ public class LocationNotificationListener {
     @Async
     @EventListener(ApplicationReadyEvent.class)
     public void listen() throws Exception {
-        Connection connection = dataSource.getConnection().unwrap(PgConnection.class).unwrap(Connection.class);
+        Connection connection = dataSource
+                .getConnection()
+                .unwrap(PgConnection.class)
+                .unwrap(Connection.class);
 
         PGConnection pgConnection = connection.unwrap(PGConnection.class);
 
