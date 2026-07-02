@@ -1,4 +1,4 @@
-# DeliveryTracker
+# Delivery Tracker
 
 API de rastreamento de localização de entregadores em tempo real. Recebe atualizações de coordenadas GPS via REST e as propaga instantaneamente para clientes conectados via WebSocket, sem necessidade de polling.
 
